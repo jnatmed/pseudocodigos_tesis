@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\title{Algoritmo: $\alpha$Distance Borderline-ADASYN-SMOTE}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Algoritmo: AR-ADASYN (Angle-Radius Adaptive Synthetic Sampling)}
+
+\textbf{Referencia:} Park \& Kim, 2024.
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Cálculo de pesos adaptativos por muestra minoritaria:}\\
+    Para cada muestra minoritaria $x_i$, calcular la proporción de vecinos mayoritarios entre sus $k$ vecinos más cercanos:
+    \[
+    w(i) = \frac{\text{\# vecinos mayoritarios}}{k}
+    \]
+    Normalizar los pesos:
+    \[
+    \hat{w}(i) = \frac{w(i)}{\sum_j w(j)}
+    \]
+    Calcular la cantidad de ejemplos sintéticos a generar para cada muestra:
+    \[
+    n_{syn}(i) = \hat{w}(i) \cdot n_{syn}
+    \]
+    donde $n_{syn}$ es la cantidad total deseada de ejemplos sintéticos.
+
+    \item \textbf{Definición del área segura (Safe Region):}\\
+    Seleccionar dos vecinos minoritarios cercanos $x_{nn1}$ y $x_{nn2}$ de $x_i$. Calcular:
+
+    \begin{itemize}
+        \item El ángulo entre ellos:
+        \[
+        \theta' = \arccos \left( \frac{(x_{nn1} - x_i) \odot (x_{nn2} - x_i)}{\|x_{nn1} - x_i\| \cdot \|x_{nn2} - x_i\|} \right)
+        \]
+        \item El ángulo mínimo para evitar ambigüedad:
+        \[
+        \theta = \min(\theta', \pi - \theta')
+        \]
+        \item El radio del área segura:
+        \[
+        r = \max(\|x_i - x_{nn1}\|, \|x_i - x_{nn2}\|)
+        \]
+    \end{itemize}
+
+    \item \textbf{Generación de datos sintéticos dentro del área segura:}\\
+    Para cada $j = 1, \ldots, n_{syn}(i)$:
+    \begin{itemize}
+        \item Elegir un ángulo aleatorio $\alpha \in [0, \theta]$
+        \item Construir matriz de rotación:
+        \[
+        R(\alpha) =
+        \begin{bmatrix}
+        \cos(\alpha) & -\sin(\alpha) \\
+        \sin(\alpha) & \cos(\alpha)
+        \end{bmatrix}
+        \]
+        \item Calcular vector base $v = x_{nn1} - x_i$
+        \item Elegir un radio aleatorio $\beta \in [0, r]$
+        \item Generar el nuevo punto sintético:
+        \[
+        x_{\text{syn}}^{(j)} = x_i + \beta \cdot R(\alpha) \cdot \frac{v}{\|v\|}
+        \]
+    \end{itemize}
+\end{enumerate}
+
+\end{document}

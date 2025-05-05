@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\title{Algoritmo: $\alpha$Distance Borderline-ADASYN-SMOTE Mejorado}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Algoritmo: $\alpha$Distance Borderline-ADASYN-SMOTE Mejorado}
+
+\textbf{Referencia base:} Feng \& Li, 2021.\\
+\textbf{Mejora incorporada:} filtrado adicional de muestras ruidosas basado en umbral de $\alpha'_n$.
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{División de vecinos:}\\
+    Para cada muestra minoritaria \( p_i \), obtener sus \( m \) vecinos más cercanos y dividirlos en:
+    \begin{itemize}
+        \item Vecinos de clase minoritaria: cantidad \( pnum \)
+        \item Vecinos de clase mayoritaria: cantidad \( nnum \)
+    \end{itemize}
+
+    \item \textbf{Cálculo de pesos inversos:}\\
+    Para cada vecino \( p_j \) de \( p_i \), calcular el peso basado en la distancia:
+    \[
+    \alpha_j = \frac{1}{\text{dist}(p_i, p_j)}
+    \]
+
+    \item \textbf{Suma de pesos por clase:}
+    \[
+    \alpha'_p = \sum \alpha_j \text{ (de vecinos minoritarios)}, \quad 
+    \alpha'_n = \sum \alpha_j \text{ (de vecinos mayoritarios)}
+    \]
+
+    \item \textbf{Identificación inicial de muestras peligrosas:}\\
+    Si \( \alpha'_n > \alpha'_p \), entonces \( p_i \) se considera una muestra \emph{potencialmente peligrosa}.
+
+    \item \textbf{Filtrado de muestras ruidosas (mejora propuesta):}\\
+    Calcular el umbral de ruido \( \theta \) como el percentil 25 de todos los \( \alpha'_n \) del conjunto de muestras minoritarias.\\
+    Si \( \alpha'_n < \theta \), entonces \( p_i \) se considera una muestra \emph{ruidosa} y se descarta del conjunto peligroso.
+
+    \vspace{1em}
+    \noindent \textbf{Ejemplo:} \\
+    Supongamos que para un subconjunto de muestras minoritarias, los valores de \( \alpha'_n \) son:
+    
+    \[
+    \alpha'_n = [0.10,\ 0.15,\ 0.20,\ 0.25,\ 0.30,\ 0.40,\ 0.50,\ 0.70,\ 0.90]
+    \]
+    
+    La cantidad total de valores es \( n = 9 \). Para calcular el percentil 25 (primer cuartil), usamos la fórmula:
+    
+    \[
+    P_{25} = \frac{25}{100} \cdot (n + 1) = 0.25 \cdot 10 = 2.5
+    \]
+    
+    El percentil 25 se encuentra entre las posiciones 2 y 3 (valores 0.15 y 0.20), por lo tanto:
+    
+    \[
+    \theta = 0.15 + 0.5 \cdot (0.20 - 0.15) = 0.175
+    \]
+    
+    Cualquier muestra con \( \alpha'_n < 0.175 \) será considerada \emph{ruidosa} y no se utilizará para la generación de muestras sintéticas.
+
+    \noindent Por lo tanto, los valores \( \alpha'_n = 0.10 \) y \( 0.15 \), al ser menores que \( \theta = 0.175 \), corresponden a muestras \emph{ruidosas}. Estas muestras serán descartadas del conjunto de muestras peligrosas, y no participarán en los siguientes pasos de generación sintética.
+
+    \item \textbf{Cálculo total de ejemplos sintéticos:}
+    \[
+    G = (N - n) \cdot \beta
+    \]
+    Donde:
+    \begin{itemize}
+        \item \( N \): número de muestras de la clase mayoritaria
+        \item \( n \): número de muestras de la clase minoritaria
+        \item \( \beta \in [0,1] \): proporción deseada de balance.
+    \end{itemize}
+
+    \item \textbf{Distribución proporcional del total:}\\
+    Para cada muestra \emph{peligrosa no ruidosa} \( p_i \), calcular:
+    \[
+    r_i = \frac{\Delta_i}{m}, \quad 
+    \hat{r}_i = \frac{r_i}{\sum r_i}, \quad 
+    g_i = \hat{r}_i \cdot G
+    \]
+    Donde:
+    \begin{itemize}
+        \item \( \Delta_i \): número de vecinos mayoritarios de \( p_i \)
+        \item \( m \): cantidad total de vecinos
+        \item \( r_i \): proporción de vecinos mayoritarios para \( p_i \)
+        \item \( \hat{r}_i \): proporción normalizada
+        \item \( g_i \): cantidad de muestras sintéticas a generar para \( p_i \)
+    \end{itemize}
+
+    \item \textbf{Generación de muestras sintéticas:}\\
+    Para cada \( p_i \), generar \( g_i \) muestras sintéticas mediante interpolación:
+    \[
+    s = p_i + \lambda \cdot (p_z - p_i), \quad \lambda \in [0, 1]
+    \]
+    Donde \( p_z \) es un vecino minoritario aleatorio de \( p_i \).
+\end{enumerate}
+
+\end{document}
