@@ -1,15 +1,13 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.4)  4 MAY 2025 21:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.4)  5 MAY 2025 22:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**./alfa-dbasmote.tex
-(alfa-dbasmote.tex
+**./alfa-dbasmote_v2_mas_ar-adasyn.tex
+(alfa-dbasmote_v2_mas_ar-adasyn.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
-! Undefined control sequence.
-l.2 \section
-            *{Algoritmo: $\alpha$Distance Borderline-ADASYN-SMOTE}
-? ment class
+(C:\Program Files\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (C:\Program Files\MiKTeX\tex/latex/base\size12.clo
 File: size12.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
 )
@@ -151,8 +149,8 @@ File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count278
 \l__pdf_internal_box=\box54
 )
-No file alfa-dbasmote.aux.
-\openout1 = `alfa-dbasmote.aux'.
+(alfa-dbasmote_v2_mas_ar-adasyn.aux)
+\openout1 = `alfa-dbasmote_v2_mas_ar-adasyn.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
@@ -168,6 +166,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -216,35 +215,42 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 LaTeX Warning: No \author given.
 
+
+Overfull \hbox (10.19635pt too wide) in paragraph at lines 14--14
+[]\OT1/cmr/bx/n/17.28 Algoritmo: So-bre-muestreo H^^S^^Pbrido $\OML/cmm/m/it/17
+.28 $\OT1/cmr/bx/n/17.28 DBASMOTE + AR-
+ []
+
 [1
 
 {C:/Users/User/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
-(alfa-dbasmote.aux)
+(alfa-dbasmote_v2_mas_ar-adasyn.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 2683 strings out of 474486
- 39839 string characters out of 5753574
- 1933542 words of memory out of 5000000
- 24982 multiletter control sequences out of 15000+600000
+ 2689 strings out of 474486
+ 40236 string characters out of 5753574
+ 1932542 words of memory out of 5000000
+ 24986 multiletter control sequences out of 15000+600000
  569703 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,6n,65p,232b,365s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,7n,65p,529b,355s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\User\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1
 200.pk><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/P
 rogram Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files
 /MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX/font
 s/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/publi
 c/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm
-/cmr17.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Fi
-les/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on alfa-dbasmote.pdf (2 pages, 109452 bytes).
+/cmr17.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:
+/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Fil
+es/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on alfa-dbasmote_v2_mas_ar-adasyn.pdf (2 pages, 128404 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
+ 64 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

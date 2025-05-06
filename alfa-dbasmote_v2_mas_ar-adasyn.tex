@@ -1,0 +1,81 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\title{Algoritmo Propuesto: Sobremuestreo Híbrido $\alpha$DBASMOTE + AR-ADASYN}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Algoritmo: Sobremuestreo Híbrido $\alpha$DBASMOTE + AR-ADASYN}
+
+\textbf{Fusión:} $\alpha$DBASMOTE (Feng \& Li, 2021) + AR-ADASYN (Park \& Kim, 2024)
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Identificación de muestras peligrosas:}\\
+    Para cada muestra minoritaria \( p_i \), obtener sus \( m \) vecinos más cercanos. Calcular pesos inversos:
+    \[
+    \alpha_j = \frac{1}{\text{dist}(p_i, p_j)}
+    \]
+    Dividir vecinos en mayoritarios/minoritarios y calcular:
+    \[
+    \alpha'_p = \sum \alpha_j \text{ (min)}, \quad \alpha'_n = \sum \alpha_j \text{ (may)}
+    \]
+    Si \( \alpha'_n > \alpha'_p \), se considera muestra \emph{peligrosa}.
+
+    \item \textbf{Filtrado de ruido (mejora propia):}\\
+    Se observa que algunas muestras minoritarias, aunque se ubiquen cerca de vecinos mayoritarios, tienen a sus vecinos minoritarios demasiado alejados. Esta condición sugiere que dichas muestras no representan adecuadamente a la clase minoritaria en su vecindad y podrían introducir ruido si se usan para generar datos sintéticos. 
+    
+    Para mitigar este efecto, se propone un filtrado basado en percentiles: se calcula el percentil 25 de todos los valores \( \alpha'_n \), que representan la suma de pesos inversos de los vecinos mayoritarios. Aquel \( p_i \) cuya \( \alpha'_n \) se encuentre por debajo de este umbral será considerada una muestra \emph{ruidosa} y se descartará del proceso de generación. Esto permite excluir las instancias menos confiables de forma estadísticamente fundamentada.
+    
+    \item \textbf{Cálculo global de sintéticos:}
+    \[
+    G = (N - n) \cdot \beta
+    \]
+    donde \( N \): mayoritarios, \( n \): minoritarios, \( \beta \in [0, 1] \): proporción deseada.
+
+    \item \textbf{Distribución proporcional del total:}\\
+    Para cada muestra peligrosa \( p_i \), calcular:
+    \[
+    r_i = \frac{\Delta_i}{m}, \quad \hat{r}_i = \frac{r_i}{\sum r_i}, \quad g_i = \hat{r}_i \cdot G
+    \]
+    donde \( \Delta_i \) es el número de vecinos mayoritarios.
+
+    \item \textbf{Definición del área segura (AR-ADASYN):}\\
+    Para cada \( p_i \), seleccionar dos vecinos minoritarios \( x_{nn1}, x_{nn2} \), calcular:
+    \[
+    \theta' = \arccos \left( \frac{(x_{nn1} - p_i) \odot (x_{nn2} - p_i)}{\|x_{nn1} - p_i\| \cdot \|x_{nn2} - p_i\|} \right)
+    \]
+    \[
+    \theta = \min(\theta', \pi - \theta')
+    \]
+    \[
+    r = \max(\|x_{nn1} - p_i\|, \|x_{nn2} - p_i\|)
+    \]
+
+    \item \textbf{Generación de datos sintéticos (AR-ADASYN):}\\
+    Para cada \( j = 1, \dots, g_i \):
+    \begin{itemize}
+        \item Elegir ángulo aleatorio \( \alpha \in [0, \theta] \)
+        \item Construir matriz de rotación:
+        \[
+        R(\alpha) =
+        \begin{bmatrix}
+        \cos(\alpha) & -\sin(\alpha) \\
+        \sin(\alpha) & \cos(\alpha)
+        \end{bmatrix}
+        \]
+        \item Calcular vector base \( v = x_{nn1} - p_i \)
+        \item Elegir radio aleatorio \( \beta \in [0, r] \)
+        \item Generar:
+        \[
+        x_{\text{syn}}^{(j)} = p_i + \beta \cdot R(\alpha) \cdot \frac{v}{\|v\|}
+        \]
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
